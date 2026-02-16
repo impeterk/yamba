@@ -1,5 +1,16 @@
 {
   "extends": "@tsconfig/node24/tsconfig.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "paths": {
+      "#build/ui": ["./node_modules/.nuxt-ui/ui"]
+    },
+    "types": ["node"],
+    "noEmit": true
+  },
   "include": [
     "vite.config.*",
     "vitest.config.*",
@@ -7,16 +18,5 @@
     "nightwatch.conf.*",
     "playwright.config.*",
     "eslint.config.*"
-  ],
-  "compilerOptions": {
-    "noEmit": true,
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "types": ["node"],
-    "paths": {
-      "#build/ui": ["./node_modules/.nuxt-ui/ui"]
-    }
-  }
+  ]
 }

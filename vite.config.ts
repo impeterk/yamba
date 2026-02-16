@@ -1,10 +1,10 @@
-import { fileURLToPath, URL } from 'node:url'
-
-import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
-import ui from './vite.nuxt-ui'
+import { fileURLToPath, URL } from 'node:url'
+import { defineConfig } from 'vite'
 import electron from 'vite-plugin-electron/simple'
+import vueDevTools from 'vite-plugin-vue-devtools'
+
+import ui from './vite.nuxt-ui'
 
 // https://vite.dev/config/
 export default defineConfig({
