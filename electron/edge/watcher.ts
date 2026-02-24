@@ -48,6 +48,13 @@ if (currentWatcher) {
         file: fileName,
         content,
       });
+      const outputDir = path.join(os.homedir(), config.output);
+      try {
+        await fs.access(outputDir);
+      } catch {
+        await fs.mkdir(outputDir, { recursive: true });
+      }
+        await fs.writeFile(path.join(outputDir, `${fileName}.html`), content, 'utf-8');
     } catch (err) {
       console.error("Failed reading template:", err);
     }

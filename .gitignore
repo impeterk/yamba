@@ -43,5 +43,4 @@ auto-imports.d.ts
 components.d.ts
 
 # electron
-dist-electron
 release

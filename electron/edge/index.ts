@@ -11,6 +11,9 @@ import { watchTemplate } from './watcher'
 const edge = Edge.create()
 const require = createRequire(import.meta.url)
 const mjml2html = require('mjml')
+const{ registerComponent } = require('mjml-core')
+const {default: MjMsoButton} = require('mjml-msobutton')
+
 
 export function mountEdge(_path = config.input) {
   const mountPath = path.join(os.homedir(), _path)
@@ -18,7 +21,8 @@ export function mountEdge(_path = config.input) {
 }
 export async function rendermjml(name) {
   const edgeHtml = await edge.render(name)
-  return mjml2html(edgeHtml, {minify: true}).html
+  registerComponent(MjMsoButton)
+  return mjml2html(edgeHtml).html
 }
 
 

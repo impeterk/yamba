@@ -36,6 +36,7 @@ function createWindow() {
     height: 960,
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
+      devTools: !app.isPackaged,
     },
   })
 

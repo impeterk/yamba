@@ -10,6 +10,7 @@
         "chokidar": "^5.0.0",
         "edge.js": "^6.5.0",
         "mjml": "^4.18.0",
+        "mjml-msobutton": "^1.1.0",
         "pinia": "^3.0.4",
         "tailwindcss": "^4.2.1",
         "vue": "^3.5.28",
@@ -1611,6 +1612,8 @@
     "mjml-image": ["mjml-image@4.18.0", "", { "dependencies": { "@babel/runtime": "^7.28.4", "lodash": "^4.17.21", "mjml-core": "4.18.0" } }, "sha512-e09NkoYwvzMcTv7V6H5doWD6Te2E1y2EvOLQJoXKVdQpDwyBWGdfnZke0scJGdA58HLAB+0mLYogpLwmfLaP5Q=="],
 
     "mjml-migrate": ["mjml-migrate@4.18.0", "", { "dependencies": { "@babel/runtime": "^7.28.4", "js-beautify": "^1.6.14", "lodash": "^4.17.21", "mjml-core": "4.18.0", "mjml-parser-xml": "4.18.0", "yargs": "^17.7.2" }, "bin": { "migrate": "lib/cli.js" } }, "sha512-qfNCgW9zhJIsbPyXFA5RT/WY4mlje3N0WhHHOsHc0nY89Q01DenyslUy9nLLGXwi4K5FHS58oCjwWbMhwDcj1w=="],
+
+    "mjml-msobutton": ["mjml-msobutton@1.1.0", "", { "dependencies": { "lodash": "^4.17.21", "mjml": "^4.9.3", "mjml-core": "^4.9.3" } }, "sha512-VDhX4jXno60Lp2UqMSBVd1MWectea6AAZFdQfPi9qyYsKq8czXiLKSbUVwhkMdKIi2/iWtF+E+9u72ZB2VNC2A=="],
 
     "mjml-navbar": ["mjml-navbar@4.18.0", "", { "dependencies": { "@babel/runtime": "^7.28.4", "lodash": "^4.17.21", "mjml-core": "4.18.0" } }, "sha512-uho/MS2tfNAe+V9u2X7NoCco34MDbdp30ETA8009Qo1VCP/D8lZ+s69WGRPu6hvN/Y2pzBgZly++CMg3qFZqBQ=="],
 
