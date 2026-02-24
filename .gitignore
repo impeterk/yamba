@@ -41,3 +41,7 @@ __screenshots__/
 # Nuxt UI -  Auto-generated type declarations
 auto-imports.d.ts
 components.d.ts
+
+# electron
+dist-electron
+release

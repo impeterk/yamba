@@ -1,0 +1,58 @@
+import type { IpcMainInvokeEvent } from 'electron'
+
+import { Edge } from 'edge.js'
+import { ipcMain } from 'electron'
+import { createRequire } from "node:module";
+import os from 'node:os'
+import path from 'node:path'
+
+import { config } from '../config'
+import { watchTemplate } from './watcher'
+const edge = Edge.create()
+const require = createRequire(import.meta.url)
+const mjml2html = require('mjml')
+
+export function mountEdge(_path = config.input) {
+  const mountPath = path.join(os.homedir(), _path)
+  edge.mount(mountPath)
+}
+export async function rendermjml(name) {
+  const edgeHtml = await edge.render(name)
+  return mjml2html(edgeHtml, {minify: true}).html
+}
+
+
+const handlers = [
+  {
+    channel: 'edge:mount',
+    listener: async (_event: IpcMainInvokeEvent, path = config.input) => {
+      try {
+        mountEdge(path)
+        return true
+      } catch (error) {
+        console.error('Failed to mount edge:', error)
+        return false
+      }
+    },
+  },
+  {
+    channel: 'edge:watch',
+    listener: async (_event: IpcMainInvokeEvent, name = 'home') => {
+      try {
+        await watchTemplate(name)
+        return true
+      } catch (error) {
+        console.error('Failed to watch template:', error)
+        return false
+      }
+    },
+  }
+]
+
+export function initEdgeHandlers() {
+  handlers.forEach(({ channel, listener }) => {
+    ipcMain.handle(channel, listener)
+  })
+}
+
+export default handlers

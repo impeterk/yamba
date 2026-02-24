@@ -5,9 +5,11 @@ import Layout from './layouts/main.vue'
 </script>
 
 <template>
-  <UApp>
-    <Layout>
-      <RouterView />
-    </Layout>
-  </UApp>
+  <Suspense>
+    <UApp>
+      <Layout>
+        <RouterView />
+      </Layout>
+    </UApp>
+  </Suspense>
 </template>

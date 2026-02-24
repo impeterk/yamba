@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
+import IndexRoute from './+page.vue'
+
 const routes = [
   {
     path: '/',
@@ -7,14 +9,7 @@ const routes = [
       {
         path: '',
         name: 'index',
-        component: () => import('./+page.vue'),
-      },
-      {
-        path: 'about',
-        name: 'about',
-        // route level code-splitting
-        // which is lazy-loaded when the route is visited.
-        component: () => import('./about/+page.vue'),
+        component: IndexRoute,
       },
     ],
   },
