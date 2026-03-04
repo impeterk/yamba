@@ -3,7 +3,8 @@
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
   "appId": "YourAppID",
   "asar": true,
-  "productName": "ViTron",
+  "productName": "Yamba",
+  "description": "Yet another (e)mail building application",
   "icon": "./public/icon.png",
   "directories": {
     "output": "release/${version}"
