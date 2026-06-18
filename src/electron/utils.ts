@@ -1,4 +1,5 @@
-import { ipcMain } from 'electron'
+import chokidar from 'chokidar'
+import { BrowserWindow, ipcMain } from 'electron'
 import os from 'node:os'
 import path from 'node:path'
 import fs from 'node:fs/promises'
@@ -10,16 +11,44 @@ const validExt = ['json', 'edge']
 const handlers = [
   {
     channel: 'utils:init-tree',
-    listener: async () => {
-      const homeDir = os.homedir()
-      const templatesDir = path.join(homeDir, config.input)
-
-      const files = await fs.readdir(templatesDir, { recursive: true })
-      const validFiles = files.filter((f) => validExt.includes(f.split('.').at(-1)!))
-      return createTree(validFiles)
-    },
+    listener: async () => await watchTree(),
   },
 ]
+
+let currentWatcher: ReturnType<typeof chokidar.watch> | null = null
+export async function watchTree() {
+  const homeDir = os.homedir()
+  const templatesDir = path.join(homeDir, config.input)
+
+  if (currentWatcher) {
+    currentWatcher.close()
+    currentWatcher = null
+  }
+  currentWatcher = chokidar.watch(templatesDir, {
+    ignoreInitial: false,
+    awaitWriteFinish: {
+      stabilityThreshold: 200,
+      pollInterval: 100,
+    },
+  })
+
+  async function generateTree() {
+    const files = await fs.readdir(templatesDir, { recursive: true })
+    const validFiles = files.filter((f) => validExt.includes(f.split('.').at(-1)!))
+    const tree = createTree(validFiles)
+    sendToRenderer('utils:file-tree', { tree })
+  }
+  currentWatcher.on('add', generateTree)
+  currentWatcher.on('unlink', generateTree)
+}
+
+export const sendToRenderer = (channel: any, payload: any) => {
+  const windows = BrowserWindow.getAllWindows()
+  windows.forEach((win) => {
+    win.webContents.send(channel, payload)
+  })
+}
+
 export function createTree(paths: string[]) {
   const tree: TreeItem[] = []
 

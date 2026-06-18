@@ -3,16 +3,16 @@ import type { TreeItem } from '@nuxt/ui'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 const files = ref<TreeItem[]>([])
-const route = useRoute()
 const router = useRouter()
 
 onMounted(async () => {
-  console.log('hmm')
-  const tree = await window.ipcRenderer.invoke('utils:init-tree')
-  files.value = tree
+  await window.ipcRenderer.invoke('utils:init-tree')
+  window.ipcRenderer.on('utils:file-tree', (_, { tree }) => {
+    files.value = tree
+  })
 })
 
-function handleSelect(item) {
+function handleSelect(item: Partial<TreeItem>) {
   if (item.type === 'file') {
     router.push({ params: { template: item.link } })
   }
@@ -24,7 +24,7 @@ function handleSelect(item) {
     v-if="files.length"
     :items="files"
     propagate-select
-    @select="({ detail }) => handleSelect(detail.value)"
+    @select="({ detail }) => handleSelect(detail.value!)"
   >
   </UTree>
 </template>

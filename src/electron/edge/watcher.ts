@@ -1,11 +1,11 @@
 import chokidar from 'chokidar'
-import { BrowserWindow } from 'electron'
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 
 import { config } from '../config'
 import { rendermjml } from './index'
+import { sendToRenderer } from '../utils'
 
 let currentWatcher: ReturnType<typeof chokidar.watch> | null = null
 export async function watchTemplate(fileName = 'home') {
@@ -29,13 +29,6 @@ export async function watchTemplate(fileName = 'home') {
       pollInterval: 100,
     },
   })
-
-  const sendToRenderer = (channel: any, payload: any) => {
-    const windows = BrowserWindow.getAllWindows()
-    windows.forEach((win) => {
-      win.webContents.send(channel, payload)
-    })
-  }
 
   const readAndSend = async () => {
     try {
