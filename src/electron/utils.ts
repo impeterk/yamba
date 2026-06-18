@@ -5,7 +5,7 @@ import path from 'node:path'
 import fs from 'node:fs/promises'
 
 import { config } from './config'
-import { TreeItem } from '@nuxt/ui'
+import { type TreeItem } from '@nuxt/ui'
 const validExt = ['json', 'edge']
 
 const handlers = [
