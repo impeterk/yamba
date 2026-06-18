@@ -7,7 +7,7 @@ import path from 'node:path'
 import { config } from '../config'
 import { rendermjml } from './index'
 
-let currentWatcher = null
+let currentWatcher: ReturnType<typeof chokidar.watch> | null = null
 export async function watchTemplate(fileName = 'home') {
   const homeDir = os.homedir()
   const templatePath = path.join(homeDir, config.input, `${fileName}.edge`)
@@ -30,7 +30,7 @@ export async function watchTemplate(fileName = 'home') {
     },
   })
 
-  const sendToRenderer = (channel, payload) => {
+  const sendToRenderer = (channel: any, payload: any) => {
     const windows = BrowserWindow.getAllWindows()
     windows.forEach((win) => {
       win.webContents.send(channel, payload)

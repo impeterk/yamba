@@ -37,7 +37,7 @@ onMounted(() => {
 
   view.value = new EditorView({
     state,
-    parent: editorContainer.value,
+    parent: editorContainer.value ?? undefined,
   })
 })
 

@@ -4,7 +4,6 @@
   "appId": "YourAppID",
   "asar": true,
   "productName": "Yamba",
-  "description": "Yet another (e)mail building application",
   "icon": "./public/icon.png",
   "directories": {
     "output": "release/${version}"
