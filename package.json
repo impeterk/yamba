@@ -26,6 +26,7 @@
     "@codemirror/state": "^6.6.0",
     "@codemirror/view": "^6.43.1",
     "@nuxt/ui": "^4.9.0",
+    "@pierre/trees": "^1.0.0-beta.4",
     "@types/mjml": "^5.0.0",
     "@vueuse/core": "^14.3.0",
     "chokidar": "^5.0.0",
@@ -36,6 +37,7 @@
     "pinia": "^3.0.4",
     "tailwindcss": "^4.3.1",
     "vue": "^3.5.38",
+    "vue-codemirror6": "^1.5.2",
     "vue-router": "^5.1.0"
   },
   "devDependencies": {

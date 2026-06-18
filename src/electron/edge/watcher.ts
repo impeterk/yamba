@@ -47,10 +47,12 @@ export async function watchTemplate(fileName = 'home') {
         template,
       })
       const outputDir = path.join(os.homedir(), config.output)
+      const outputDirname = path.dirname(path.join(outputDir, fileName))
+      console.log(outputDirname)
       try {
-        await fs.access(outputDir)
+        await fs.access(outputDirname)
       } catch {
-        await fs.mkdir(outputDir, { recursive: true })
+        await fs.mkdir(outputDirname, { recursive: true })
       }
       await fs.writeFile(path.join(outputDir, `${fileName}.html`), content, 'utf-8')
     } catch (err) {

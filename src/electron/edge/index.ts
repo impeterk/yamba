@@ -20,6 +20,7 @@ export function mountEdge(_path = config.input) {
 }
 export async function rendermjml(name: string) {
   const edgeHtml = await edge.render(name)
+  if (!edgeHtml) return ''
   registerComponent(MjMsoButton)
   const mjml = await mjml2html(edgeHtml, { minify: true })
   return mjml.html

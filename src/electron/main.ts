@@ -4,6 +4,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { initEdgeHandlers, mountEdge } from './edge/index'
+import { initUtilHandlers } from './utils'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 export const require = createRequire(import.meta.url)
 
@@ -79,6 +80,7 @@ app.on('activate', () => {
 
 app.whenReady().then(() => {
   initEdgeHandlers()
+  initUtilHandlers()
   mountEdge()
   createWindow()
 })

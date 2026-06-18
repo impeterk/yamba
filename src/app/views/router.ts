@@ -7,7 +7,7 @@ const routes = [
     path: '/',
     children: [
       {
-        path: '',
+        path: ':template(.*)*',
         name: 'index',
         component: IndexRoute,
       },
