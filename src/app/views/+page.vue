@@ -19,12 +19,15 @@ async function save() {
   })
 }
 </script>
+
 <template>
-  <section class="grid grid-cols-2">
-    <div class="col-span-1">
+  <div class="flex">
+    <UDashboardPanel id="nested" resizable :default-size="50" :min-size="0" :max-size="100">
       <CodeEditor v-model="template" @save="save()" />
       <UButton @click="save">Save</UButton>
-    </div>
-    <div v-html="content" />
-  </section>
+    </UDashboardPanel>
+    <UDashboardPanel id="slot">
+      <div v-html="content" />
+    </UDashboardPanel>
+  </div>
 </template>

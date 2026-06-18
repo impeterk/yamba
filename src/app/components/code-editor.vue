@@ -24,6 +24,7 @@ const emit = defineEmits(['save'])
     placeholder="create new template"
     tab
     basic
+    wrap
   />
 </template>
 

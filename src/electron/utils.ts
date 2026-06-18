@@ -67,12 +67,12 @@ export function createTree(paths: string[]) {
               label: part.replace(/\.\w+$/, ''),
               icon: 'i-tabler:file',
               type: 'file',
-              link: getLink(path),
+              to: getLink(path),
             }
           : {
               label: part + '/',
+              icon: 'i-tabler-folder',
               children: [],
-              defaultExpanded: false,
               type: 'folder',
             }
 
@@ -89,7 +89,7 @@ export function createTree(paths: string[]) {
   return tree
 }
 function getLink(path: string) {
-  return path.replace(`/${config.input}`, '').replace(/\.\w+$/, '')
+  return '/' + path.replace(`/${config.input}`, '').replace(/\.\w+$/, '')
 }
 
 // export function createTree(paths: string[]) {
