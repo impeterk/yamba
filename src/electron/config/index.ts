@@ -4,7 +4,7 @@ import path from 'node:path'
 
 const defaultConfig = {
   input: '/vue-tron/templates',
-  output: '/vue-tron/dist'
+  output: '/vue-tron/dist',
 }
 
 function getConfigPath() {

@@ -2,18 +2,17 @@ import type { IpcMainInvokeEvent } from 'electron'
 
 import { Edge } from 'edge.js'
 import { ipcMain } from 'electron'
-import { createRequire } from "node:module";
+import { createRequire } from 'node:module'
 import os from 'node:os'
 import path from 'node:path'
 
 import { config } from '../config'
-import { watchTemplate } from './watcher'
+import { watchTemplate, saveTemplate } from './watcher'
 const edge = Edge.create()
 const require = createRequire(import.meta.url)
 const mjml2html = require('mjml')
-const{ registerComponent } = require('mjml-core')
-const {default: MjMsoButton} = require('mjml-msobutton')
-
+const { registerComponent } = require('mjml-core')
+const { default: MjMsoButton } = require('mjml-msobutton')
 
 export function mountEdge(_path = config.input) {
   const mountPath = path.join(os.homedir(), _path)
@@ -24,7 +23,6 @@ export async function rendermjml(name) {
   registerComponent(MjMsoButton)
   return mjml2html(edgeHtml).html
 }
-
 
 const handlers = [
   {
@@ -50,7 +48,20 @@ const handlers = [
         return false
       }
     },
-  }
+  },
+  {
+    channel: 'edge:template-save',
+    listener: async (_event: IpcMainInvokeEvent, { name, data } = { name: 'home', data: '' }) => {
+      console.log(name, data)
+      try {
+        await saveTemplate(name, data)
+        return true
+      } catch (error) {
+        console.error('Failed to save template:', error)
+        return false
+      }
+    },
+  },
 ]
 
 export function initEdgeHandlers() {

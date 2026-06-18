@@ -1,12 +1,11 @@
-import { app, BrowserWindow, shell } from 'electron'
-import { createRequire } from "node:module";
+import { app, BrowserWindow, screen, shell } from 'electron'
+import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { initEdgeHandlers, mountEdge } from './edge/index'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-export const require = createRequire(import.meta.url);
-
+export const require = createRequire(import.meta.url)
 
 // The built directory structure
 //
@@ -30,10 +29,12 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
 let win: BrowserWindow | null
 
 function createWindow() {
+
+const {width, height} = screen.getPrimaryDisplay().workAreaSize
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC!, 'icon.png'),
-    width: 1200,
-    height: 960,
+    width,
+    height,
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
       devTools: !app.isPackaged,
@@ -78,6 +79,7 @@ app.on('activate', () => {
 })
 
 app.whenReady().then(() => {
+
   initEdgeHandlers()
   mountEdge()
   createWindow()
