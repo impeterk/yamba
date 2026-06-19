@@ -25,8 +25,8 @@ onMounted(async () => {
     :items="files"
     propagate-select
     :multiple="false"
-    :get-key="(i) => i?.to"
-    @select="({ detail }) => handleSelect(detail.value!)"
+    :get-key="(i: Partial<TreeItem>) => i?.to"
+    @select="(e: any) => handleSelect(e.detail.value!)"
   >
   </UTree>
 </template>

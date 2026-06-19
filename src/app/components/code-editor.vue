@@ -9,7 +9,6 @@ const emit = defineEmits(['save'])
 <template>
   <code-mirror
     v-model="doc"
-    class="editor"
     :keymap="[
       {
         key: 'Mod-s',
@@ -27,14 +26,3 @@ const emit = defineEmits(['save'])
     wrap
   />
 </template>
-
-<style scoped>
-.editor {
-  border: 1px solid #ccc;
-  min-height: 300px;
-}
-
-.cm-editor {
-  height: 100%;
-}
-</style>
