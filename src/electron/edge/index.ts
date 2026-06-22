@@ -2,14 +2,14 @@ import type { IpcMainInvokeEvent } from 'electron'
 
 import { Edge } from 'edge.js'
 import { ipcMain } from 'electron'
+import mjml2html from 'mjml'
+import { registerComponent } from 'mjml-core'
 import { createRequire } from 'node:module'
 import os from 'node:os'
 import path from 'node:path'
 
 import { config } from '../config'
-import { watchTemplate, saveTemplate } from './watcher'
-import mjml2html from 'mjml'
-import { registerComponent } from 'mjml-core'
+import { saveTemplate, watchTemplate } from './watcher'
 const edge = Edge.create()
 const require = createRequire(import.meta.url)
 const { default: MjMsoButton } = require('mjml-msobutton')

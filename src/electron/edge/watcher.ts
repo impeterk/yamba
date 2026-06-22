@@ -4,8 +4,8 @@ import os from 'node:os'
 import path from 'node:path'
 
 import { config } from '../config'
-import { rendermjml } from './index'
 import { sendToRenderer } from '../utils'
+import { rendermjml } from './index'
 
 let currentWatcher: ReturnType<typeof chokidar.watch> | null = null
 export async function watchTemplate(fileName = 'home') {
@@ -40,6 +40,7 @@ export async function watchTemplate(fileName = 'home') {
         template,
       })
       const outputDir = path.join(os.homedir(), config.output)
+      // !make this DRY
       const outputDirname = path.dirname(path.join(outputDir, fileName))
       console.log(outputDirname)
       try {
@@ -71,3 +72,4 @@ export async function saveTemplate(name: string, data: string) {
     return false
   }
 }
+

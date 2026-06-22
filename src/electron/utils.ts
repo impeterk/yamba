@@ -1,11 +1,13 @@
+import type {TreeItem} from '@nuxt/ui';
+import type { IpcMainInvokeEvent } from 'electron';
+
 import chokidar from 'chokidar'
 import { BrowserWindow, ipcMain } from 'electron'
+import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
-import fs from 'node:fs/promises'
 
 import { config } from './config'
-import { type TreeItem } from '@nuxt/ui'
 const validExt = ['json', 'edge']
 
 const handlers = [
@@ -13,6 +15,9 @@ const handlers = [
     channel: 'utils:init-tree',
     listener: async () => await watchTree(),
   },
+  {channel: 'utils:create-file',
+    listener: async (_event: IpcMainInvokeEvent, file_path: string) => await createFile(file_path)
+  }
 ]
 
 let currentWatcher: ReturnType<typeof chokidar.watch> | null = null
@@ -65,12 +70,12 @@ export function createTree(paths: string[]) {
         node = isFile
           ? {
               label: part.replace(/\.\w+$/, ''),
-              icon: 'i-tabler:file',
+              icon: 'i-fluent:mail-template-32-regular',
               type: 'file',
               to: getLink(path),
             }
           : {
-              label: part + '/',
+              label: `${part  }/`,
               icon: 'i-tabler-folder',
               children: [],
               type: 'folder',
@@ -89,44 +94,35 @@ export function createTree(paths: string[]) {
   return tree
 }
 function getLink(path: string) {
-  return '/' + path.replace(`/${config.input}`, '').replace(/\.\w+$/, '')
+  return `/${  path.replace(`/${config.input}`, '').replace(/\.\w+$/, '')}`
 }
-
-// export function createTree(paths: string[]) {
-//   const tree: TreeItem = { children: [], defaultExpanded: true } // Top-level nodes
-//   paths.forEach((path) => {
-//     const parts = path.replace(`/${config.input}`, '').split('/')
-//     let currentLevel = tree
-//
-//     parts.forEach((part, index) => {
-//       const isFile = index === parts.length - 1
-//
-//       // Find the existing node or create a new one
-//       let node: TreeItem | undefined = currentLevel.children?.find((node) => node.label === part)
-//       if (!node) {
-//         node = isFile
-//           ? {
-//               label: part?.replace(/\.\w+$/, ''),
-//               link: part?.replace(/\.\w+$/, ''),
-//               icon: 'i-tabler:file',
-//             } // File node
-//           : { label: part, children: [], defaultExpanded: false } // Folder node
-//         // @ts-ignore
-//         currentLevel.children.push(node)
-//       }
-//
-//       // Move deeper into the tree if it's a folder
-//       if (!isFile) {
-//         currentLevel = node
-//       }
-//     })
-//   })
-//
-//   return [tree]
-// }
 
 export function initUtilHandlers() {
   handlers.forEach(({ channel, listener }) => {
     ipcMain.handle(channel, listener)
   })
+}
+
+async function createFile(_path: string) {
+  const homeDir = os.homedir()
+  const inputDir = path.join(homeDir, config.input)
+  const file_path = path.join(inputDir, _path)
+  const file_dir = path.dirname(path.join(inputDir, file_path))
+      try {
+        await fs.access(file_dir)
+      } catch {
+        await fs.mkdir(file_dir, { recursive: true })
+      }
+      try {
+        await fs.access(file_path)
+        return {success: false, error: 'file already exists'}
+      } catch {
+
+      }
+      try {
+        await fs.writeFile(file_path, '')
+        return {success: true, error: false}
+      } catch {
+        return {success: false, error: 'something went wrong'}
+      }
 }

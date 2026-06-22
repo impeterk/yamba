@@ -3,8 +3,8 @@
   "type": "module",
   "version": "0.1.0",
   "private": true,
-  "main": "dist-electron/main.js",
   "description": "Yet another (e)mail building application",
+  "main": "dist-electron/main.js",
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
   },
@@ -18,7 +18,7 @@
     "lint": "run-s lint:*",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
-    "format": "prettier --write --experimental-cli src/"
+    "format": "prettier --write src/"
   },
   "dependencies": {
     "@codemirror/lang-html": "^6.4.11",

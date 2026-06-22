@@ -1,23 +1,21 @@
 <script setup lang="ts">
-import { useTitle } from '@vueuse/core'
+import { computed} from 'vue'
+import { useRoute } from 'vue-router'
+
+import { useDeviceStyles } from '@/composables/use-device.ts'
+import { save } from '@/utils/save-template.ts'
 
 import CodeEditor from '../components/code-editor.vue'
 import { useTemplateWatcher } from './use-template-watcher'
-import { useRoute } from 'vue-router'
-import { computed } from 'vue'
 const route = useRoute()
 
-useTitle('Tron - Index')
-const currPath = computed(() => route.params.template?.toString() ?? 'home')
+const currPath = computed(() => route.params.template?.toString().replaceAll(',','/') ?? 'home')
 
 const { content, template } = useTemplateWatcher(currPath.value)
-async function save() {
-  if (!template.value) return
-  await window.ipcRenderer.invoke('edge:template-save', {
-    name: currPath.value,
-    data: template.value,
-  })
+async function handleSave() {
+  await save({name: currPath, template})
 }
+const device = useDeviceStyles()
 </script>
 
 <template>
@@ -27,16 +25,21 @@ async function save() {
       resizable
       :default-size="50"
       :min-size="0"
-      :max-size="100"
+      :max-size="50"
       class="min-h-0"
     >
       <section class="overflow-scroll">
-        <CodeEditor v-model="template" @save="save()" />
+        <CodeEditor v-model="template" @save="handleSave()" />
       </section>
     </UDashboardPanel>
-    <UDashboardPanel id="slot">
-      <section class="h-full overflow-scroll">
-        <div v-html="content" />
+    <UDashboardPanel
+      id="slot"
+      :min-size="50"
+    >
+      <section class="h-full overflow-scroll bg-muted">
+        <article class="mx-auto" :class="[device]">
+          <div v-html="content" />
+        </article>
       </section>
     </UDashboardPanel>
   </UMain>
