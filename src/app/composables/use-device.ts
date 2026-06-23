@@ -16,7 +16,7 @@ export function useDeviceStyles() {
         res.push('max-w-sm', 'h-[40rem]')
         break
       case 'tablet':
-        res.push('max-w-2xl', 'max-h-[calc(100vh_-_10rem)]')
+        res.push('max-w-2xl', 'h-[calc(100vh_-_10rem)]')
         break
       default:
         res = []

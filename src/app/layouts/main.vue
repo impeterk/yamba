@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from '@nuxt/ui'
+import type { NavItem } from '@shared/types'
 
 import { onMounted, ref } from 'vue'
 
 import AddFile from '@/components/add-file.vue'
 import NavBar from '@/components/nav-bar.vue'
+import RemoveFile from '@/components/remove-file.vue'
 
-const items = ref<NavigationMenuItem[]>([])
+const items = ref<NavItem[]>([])
 
 onMounted(async () => {
   await window.ipcRenderer.invoke('utils:init-tree')
@@ -32,6 +33,9 @@ onMounted(async () => {
           :collapsed
           :class="{ hidden: collapsed }"
         >
+          <template #item-trailing="{ item }">
+            <RemoveFile :item />
+          </template>
           <template #label-trailing>
             <AddFile />
           </template>

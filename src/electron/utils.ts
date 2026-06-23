@@ -7,6 +7,8 @@ import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 
+import type { NavItem } from '../shared/types'
+
 import { config } from './config'
 
 const validExt = ['json', 'edge']
@@ -19,6 +21,10 @@ const handlers = [
   {
     channel: 'utils:create-file',
     listener: async (_event: IpcMainInvokeEvent, file_path: string) => await createFile(file_path),
+  },
+  {
+    channel: 'utils:remove-file',
+    listener: async (_event: IpcMainInvokeEvent, file_path: string) => await removeFile(file_path),
   },
 ]
 
@@ -57,7 +63,7 @@ export async function watchTree() {
 }
 
 export function createTree(paths: string[]) {
-  const tree: TreeItem[] = []
+  const tree: NavItem[] = []
 
   paths.forEach((path) => {
     const parts = path.replace(`/${config.input}`, '').split('/').filter(Boolean)
@@ -73,14 +79,14 @@ export function createTree(paths: string[]) {
           ? {
               label: part.replace(/\.\w+$/, ''),
               icon: 'i-fluent:mail-template-32-regular',
-              type: 'file',
+              nodeType: 'file',
               to: getLink(path),
             }
           : {
               label: `${part}/`,
               icon: 'i-tabler-folder',
               children: [],
-              type: 'folder',
+              nodeType: 'folder',
             }
 
         currentLevel.push(node)
@@ -129,4 +135,25 @@ async function createFile(_path: string) {
   catch {
     return { success: false, error: 'something went wrong' }
   }
+}
+
+async function removeFile(_path: string) {
+  const homeDir = os.homedir()
+  const inputDir = path.join(homeDir, config.input)
+  const outputDir = path.join(homeDir, config.output)
+
+  const edgeFile = path.join(inputDir, `${_path}.edge`)
+  const templateFile = path.join(outputDir, `${_path}.html`)
+
+  let res = {}
+  try {
+    await fs.rm(edgeFile)
+    await fs.rm(templateFile)
+    res = { success: true, error: false }
+  }
+  catch (e) {
+    console.log(e)
+    res = { success: false, error: true }
+  }
+  return res
 }

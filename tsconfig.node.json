@@ -18,6 +18,7 @@
     "nightwatch.conf.*",
     "playwright.config.*",
     "eslint.config.*",
-    "src/electron/**/*"
+    "src/electron/**/*",
+    "src/shared/**/*"
   ]
 }
