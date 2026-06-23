@@ -7,6 +7,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import ui from './vite.nuxt-ui'
 
 // https://vite.dev/config/
+const renderer = process.env.NODE_ENV === 'test' ? undefined : {}
 export default defineConfig({
   plugins: [
     vue(),
@@ -25,11 +26,7 @@ export default defineConfig({
       // Ployfill the Electron and Node.js API for Renderer process.
       // If you want use Node.js in Renderer process, the `nodeIntegration` needs to be enabled in the Main process.
       // See 👉 https://github.com/electron-vite/vite-plugin-electron-renderer
-      renderer:
-        process.env.NODE_ENV === 'test'
-          ? // https://github.com/electron-vite/vite-plugin-electron-renderer/issues/78#issuecomment-2053600808
-            undefined
-          : {},
+      renderer,
     }),
   ],
   resolve: {

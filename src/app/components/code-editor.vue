@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import CodeMirror from 'vue-codemirror6'
 import { html } from '@codemirror/lang-html'
-const doc = defineModel<string>()
+import CodeMirror from 'vue-codemirror6'
 
 const emit = defineEmits(['save'])
+
+const doc = defineModel<string>()
 </script>
 
 <template>
-  <code-mirror
+  <CodeMirror
     v-model="doc"
     :keymap="[
       {

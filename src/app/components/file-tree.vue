@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { TreeItem } from '@nuxt/ui'
-import { onMounted, ref, watch } from 'vue'
+
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+
 const files = ref<TreeItem[]>([])
 const router = useRouter()
 
@@ -27,8 +29,7 @@ onMounted(async () => {
     :multiple="false"
     :get-key="(i: Partial<TreeItem>) => i?.to"
     @select="(e: any) => handleSelect(e.detail.value!)"
-  >
-  </UTree>
+  />
 </template>
 
 <style scoped></style>

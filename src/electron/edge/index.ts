@@ -10,6 +10,7 @@ import path from 'node:path'
 
 import { config } from '../config'
 import { saveTemplate, watchTemplate } from './watcher'
+
 const edge = Edge.create()
 const require = createRequire(import.meta.url)
 const { default: MjMsoButton } = require('mjml-msobutton')
@@ -20,7 +21,8 @@ export function mountEdge(_path = config.input) {
 }
 export async function rendermjml(name: string) {
   const edgeHtml = await edge.render(name)
-  if (!edgeHtml) return ''
+  if (!edgeHtml)
+    return ''
   registerComponent(MjMsoButton)
   const mjml = await mjml2html(edgeHtml, { minify: true })
   return mjml.html
@@ -33,7 +35,8 @@ const handlers = [
       try {
         mountEdge(path)
         return true
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Failed to mount edge:', error)
         return false
       }
@@ -45,7 +48,8 @@ const handlers = [
       try {
         await watchTemplate(name)
         return true
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Failed to watch template:', error)
         return false
       }
@@ -54,11 +58,13 @@ const handlers = [
   {
     channel: 'edge:template-save',
     listener: async (_event: IpcMainInvokeEvent, { name, data } = { name: 'home', data: '' }) => {
-      if (!data) return
+      if (!data)
+        return
       try {
         await saveTemplate(name, data)
         return true
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Failed to save template:', error)
         return false
       }

@@ -1,5 +1,5 @@
-import type {TreeItem} from '@nuxt/ui';
-import type { IpcMainInvokeEvent } from 'electron';
+import type { TreeItem } from '@nuxt/ui'
+import type { IpcMainInvokeEvent } from 'electron'
 
 import chokidar from 'chokidar'
 import { BrowserWindow, ipcMain } from 'electron'
@@ -8,6 +8,7 @@ import os from 'node:os'
 import path from 'node:path'
 
 import { config } from './config'
+
 const validExt = ['json', 'edge']
 
 const handlers = [
@@ -15,10 +16,18 @@ const handlers = [
     channel: 'utils:init-tree',
     listener: async () => await watchTree(),
   },
-  {channel: 'utils:create-file',
-    listener: async (_event: IpcMainInvokeEvent, file_path: string) => await createFile(file_path)
-  }
+  {
+    channel: 'utils:create-file',
+    listener: async (_event: IpcMainInvokeEvent, file_path: string) => await createFile(file_path),
+  },
 ]
+
+export function sendToRenderer(channel: any, payload: any) {
+  const windows = BrowserWindow.getAllWindows()
+  windows.forEach((win) => {
+    win.webContents.send(channel, payload)
+  })
+}
 
 let currentWatcher: ReturnType<typeof chokidar.watch> | null = null
 export async function watchTree() {
@@ -39,19 +48,12 @@ export async function watchTree() {
 
   async function generateTree() {
     const files = await fs.readdir(templatesDir, { recursive: true })
-    const validFiles = files.filter((f) => validExt.includes(f.split('.').at(-1)!))
+    const validFiles = files.filter(f => validExt.includes(f.split('.').at(-1)!))
     const tree = createTree(validFiles)
     sendToRenderer('utils:file-tree', { tree })
   }
   currentWatcher.on('add', generateTree)
   currentWatcher.on('unlink', generateTree)
-}
-
-export const sendToRenderer = (channel: any, payload: any) => {
-  const windows = BrowserWindow.getAllWindows()
-  windows.forEach((win) => {
-    win.webContents.send(channel, payload)
-  })
 }
 
 export function createTree(paths: string[]) {
@@ -64,7 +66,7 @@ export function createTree(paths: string[]) {
     parts.forEach((part, index) => {
       const isFile = index === parts.length - 1
 
-      let node = currentLevel.find((n) => n.label === part)
+      let node = currentLevel.find(n => n.label === part)
 
       if (!node) {
         node = isFile
@@ -75,7 +77,7 @@ export function createTree(paths: string[]) {
               to: getLink(path),
             }
           : {
-              label: `${part  }/`,
+              label: `${part}/`,
               icon: 'i-tabler-folder',
               children: [],
               type: 'folder',
@@ -85,7 +87,8 @@ export function createTree(paths: string[]) {
       }
 
       if (!isFile) {
-        if (!node.children) node.children = []
+        if (!node.children)
+          node.children = []
         currentLevel = node.children
       }
     })
@@ -94,7 +97,7 @@ export function createTree(paths: string[]) {
   return tree
 }
 function getLink(path: string) {
-  return `/${  path.replace(`/${config.input}`, '').replace(/\.\w+$/, '')}`
+  return `/${path.replace(`/${config.input}`, '').replace(/\.\w+$/, '')}`
 }
 
 export function initUtilHandlers() {
@@ -108,21 +111,22 @@ async function createFile(_path: string) {
   const inputDir = path.join(homeDir, config.input)
   const file_path = path.join(inputDir, _path)
   const file_dir = path.dirname(path.join(inputDir, file_path))
-      try {
-        await fs.access(file_dir)
-      } catch {
-        await fs.mkdir(file_dir, { recursive: true })
-      }
-      try {
-        await fs.access(file_path)
-        return {success: false, error: 'file already exists'}
-      } catch {
-
-      }
-      try {
-        await fs.writeFile(file_path, '')
-        return {success: true, error: false}
-      } catch {
-        return {success: false, error: 'something went wrong'}
-      }
+  try {
+    await fs.access(file_dir)
+  }
+  catch {
+    await fs.mkdir(file_dir, { recursive: true })
+  }
+  try {
+    await fs.access(file_path)
+    return { success: false, error: 'file already exists' }
+  }
+  catch {}
+  try {
+    await fs.writeFile(file_path, '')
+    return { success: true, error: false }
+  }
+  catch {
+    return { success: false, error: 'something went wrong' }
+  }
 }

@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 import { initEdgeHandlers, mountEdge } from './edge/index'
 import { initUtilHandlers } from './utils'
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 export const require = createRequire(import.meta.url)
 
@@ -48,14 +49,16 @@ function createWindow() {
 
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL)
-  } else {
+  }
+  else {
     // win.loadFile('dist/index.html')
     win.loadFile(path.join(RENDERER_DIST, 'index.html'))
   }
 
   // Make all links open with the browser, not with the application
   win.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('https:')) shell.openExternal(url)
+    if (url.startsWith('https:'))
+      shell.openExternal(url)
     return { action: 'deny' }
   })
 }

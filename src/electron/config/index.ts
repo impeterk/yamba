@@ -19,7 +19,8 @@ export async function loadConfig() {
   try {
     const config = await fs.readFile(configPath, 'utf-8')
     return config
-  } catch {
+  }
+  catch {
     await fs.mkdir(configDir, { recursive: true })
     const config = JSON.stringify(defaultConfig, null, 2)
     await fs.writeFile(configPath, config, 'utf-8')

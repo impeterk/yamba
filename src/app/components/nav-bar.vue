@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DeviceViewSwitch from './device-view-switch.vue';
+import DeviceViewSwitch from './device-view-switch.vue'
 </script>
 
 <template>

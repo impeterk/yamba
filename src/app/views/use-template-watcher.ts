@@ -1,4 +1,6 @@
-import { onMounted, ref, toValue, type MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
+
+import { onMounted, ref, toValue } from 'vue'
 
 export function useTemplateWatcher(fileName: MaybeRefOrGetter) {
   const name = toValue(fileName)

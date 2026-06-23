@@ -6,7 +6,7 @@ import Layout from './layouts/main.vue'
 
 <template>
   <Suspense>
-    <UApp :toaster="{position: 'top-right'}">
+    <UApp :toaster="{ position: 'top-right' }">
       <Layout>
         <RouterView v-slot="{ Component, route }">
           <component :is="Component" :key="route.fullPath" />

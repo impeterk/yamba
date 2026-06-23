@@ -14,7 +14,8 @@ export async function watchTemplate(fileName = 'home') {
 
   try {
     await fs.readFile(templatePath)
-  } catch {
+  }
+  catch {
     throw new Error(`Template file does not exist: ${templatePath}`)
   }
   if (currentWatcher) {
@@ -45,11 +46,13 @@ export async function watchTemplate(fileName = 'home') {
       console.log(outputDirname)
       try {
         await fs.access(outputDirname)
-      } catch {
+      }
+      catch {
         await fs.mkdir(outputDirname, { recursive: true })
       }
       await fs.writeFile(path.join(outputDir, `${fileName}.html`), content, 'utf-8')
-    } catch (err) {
+    }
+    catch (err) {
       console.error('Failed reading template:', err)
     }
   }
@@ -67,9 +70,9 @@ export async function saveTemplate(name: string, data: string) {
   try {
     await fs.writeFile(templatePath, data)
     return true
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Failed writing template:', error)
     return false
   }
 }
-

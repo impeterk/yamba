@@ -1,34 +1,35 @@
 <script lang="ts" setup>
-import type { FormError, FormSubmitEvent } from '@nuxt/ui';
+import type { FormError, FormSubmitEvent } from '@nuxt/ui'
 
-import { reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-import { createFile } from '@/utils/create-file';
+import { createFile } from '@/utils/create-file'
+
 const router = useRouter()
 
-
-const state = reactive({path: ''})
+const state = reactive({ path: '' })
 const open = ref(false)
 type Schema = typeof state
 
 function validate(state: Partial<Schema>): FormError[] {
   const errors = []
-  if (!state.path) errors.push({ name: 'path', message: 'Please provide path to file' })
+  if (!state.path)
+    errors.push({ name: 'path', message: 'Please provide path to file' })
   return errors
 }
 
 const toast = useToast()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-  const {success, error} = await createFile(event.data.path)
+  const { success, error } = await createFile(event.data.path)
   if (success) {
-    router.push({params: {template: event.data.path}})
+    router.push({ params: { template: event.data.path } })
     toast.add({ title: 'Success', description: 'New file created', color: 'success' })
     open.value = false
   }
   if (error) {
     state.path = ''
-    toast.add({title: 'Error', description: error, color: 'error'})
+    toast.add({ title: 'Error', description: error, color: 'error' })
   }
 }
 </script>
@@ -54,7 +55,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           name="path"
           label="File path"
           description="relative path to new file"
-          :ui="{description: 'my-0!'}"
+          :ui="{ description: 'my-0!' }"
         >
           <UFieldGroup class="w-full">
             <UInput v-model="state.path" class="w-full" />

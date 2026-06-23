@@ -5,6 +5,7 @@ import { onMounted, ref } from 'vue'
 
 import AddFile from '@/components/add-file.vue'
 import NavBar from '@/components/nav-bar.vue'
+
 const items = ref<NavigationMenuItem[]>([])
 
 onMounted(async () => {
@@ -13,9 +14,8 @@ onMounted(async () => {
     items.value = [{ label: 'Files', type: 'label', slot: 'label' as const }, ...tree]
   })
 })
-
-
 </script>
+
 <template>
   <UDashboardGroup>
     <UDashboardSidebar

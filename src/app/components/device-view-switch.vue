@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { devices, useDevice } from '@/composables/use-device';
+import { devices, useDevice } from '@/composables/use-device'
 
 const device = useDevice()
 </script>

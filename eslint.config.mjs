@@ -5,7 +5,7 @@ export default antfu({
   typescript: true,
   ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**', '**/dist-electron/**'],
   gitignore: true,
-  stylistic: false,
+  stylistic: true,
   rules: {
     'vue/max-attributes-per-line': [
       'error',
